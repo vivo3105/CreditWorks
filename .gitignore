@@ -1,0 +1,30 @@
+# .NET build output (recreated by every build)
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio / Rider personal settings
+.vs/
+.idea/
+*.user
+*.suo
+*.rsuser
+
+# Test output
+TestResults/
+Scripts/TestReports/
+*.trx
+coverage/
+
+# Node / Angular (restore with: npm install)
+node_modules/
+dist/
+.angular/
+
+# SQL Server database files (locked while attached; recreate with
+# Scripts\CreateDatabase.bat). Keep the folder itself via Database/.gitkeep.
+Database/*
+!Database/.gitkeep
+
+# OS files
+Thumbs.db
+.DS_Store

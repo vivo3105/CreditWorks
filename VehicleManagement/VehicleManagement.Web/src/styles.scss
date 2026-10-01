@@ -1,0 +1,70 @@
+/* You can add global styles to this file, and also import other style files */
+
+// The app is light-only; say so explicitly so form controls and the page
+// background don't pick up a dark theme from the browser or OS.
+:root {
+  color-scheme: light;
+}
+
+body {
+  background: #fff;
+  color: #1f2937;
+}
+
+// Hidden visually but still read by screen readers.
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Shared buttons; also applied to <a> so links can look like buttons.
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font: inherit;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #1d4ed8;
+    outline-offset: 2px;
+  }
+}
+
+.btn-primary {
+  border-color: #1d4ed8;
+  background: #1d4ed8;
+  color: #fff;
+
+  &:hover:not(:disabled) {
+    background: #1e40af;
+  }
+}
+
+.btn-secondary {
+  border-color: #d1d5db;
+  background: #fff;
+  color: #1f2937;
+
+  &:hover:not(:disabled) {
+    background: #f3f4f6;
+  }
+}

@@ -1,0 +1,83 @@
+<section class="vehicles">
+  <header>
+    <h2>Vehicles</h2>
+    <div class="toolbar">
+      <button type="button" class="btn btn-secondary" (click)="load()" [disabled]="loading()">Refresh</button>
+      <a routerLink="/vehicles/new" class="btn btn-primary">
+        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+          <path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        Add Vehicle
+      </a>
+    </div>
+  </header>
+
+  @if (actionError()) {
+    <p class="status error" role="alert">{{ actionError() }}</p>
+  }
+
+  @if (loading()) {
+    <p class="status">Loading vehicles…</p>
+  } @else if (error()) {
+    <p class="status error">{{ error() }}</p>
+  } @else if (vehicles().length === 0) {
+    <p class="status">No vehicles found.</p>
+  } @else {
+    <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          @for (col of columns; track col.key) {
+            <th [class.num]="col.numeric" [attr.aria-sort]="ariaSort(col.key)">
+              <button type="button" class="sort" (click)="sortBy(col.key)">
+                {{ col.label }}
+                <span class="sort-indicator" aria-hidden="true">
+                  @if (sortColumn() === col.key) {
+                    {{ sortDirection() === 'asc' ? '▲' : '▼' }}
+                  }
+                </span>
+              </button>
+            </th>
+          }
+          <th class="actions-col"><span class="visually-hidden">Actions</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (vehicle of sortedVehicles(); track vehicle.id) {
+          <tr>
+            <td>{{ vehicle.id }}</td>
+            <td>{{ vehicle.ownerName }}</td>
+            <td>{{ vehicle.manufacturerName }}</td>
+            <td>{{ vehicle.yearOfManufacture }}</td>
+            <td class="num">{{ vehicle.weight | number: '1.0-2' }}</td>
+            <td>
+              @if (vehicle.categoryName) {
+                <span class="category"><app-category-icon [name]="vehicle.categoryIcon" /><span class="badge">{{ vehicle.categoryName }}</span></span>
+              } @else {
+                <span class="muted">Uncategorised</span>
+              }
+            </td>
+            <td class="actions-col">
+              <a class="icon-btn" [routerLink]="['/vehicles', vehicle.id, 'edit']"
+                 [attr.aria-label]="'Edit vehicle ' + vehicle.id + ' (' + vehicle.ownerName + ')'" title="Edit">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                  <path d="M4 20h4L18.5 9.5a2.1 2.1 0 0 0-4-4L4 16v4Z M13.5 6.5l4 4" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+              <button type="button" class="icon-btn danger" (click)="remove(vehicle)"
+                      [disabled]="deletingId() === vehicle.id"
+                      [attr.aria-label]="'Delete vehicle ' + vehicle.id + ' (' + vehicle.ownerName + ')'" title="Delete">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                  <path d="M4 7h16M10 11v6M14 11v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4h6v3" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    </div>
+  }
+</section>

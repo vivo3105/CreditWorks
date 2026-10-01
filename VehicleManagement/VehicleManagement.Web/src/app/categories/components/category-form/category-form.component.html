@@ -1,0 +1,83 @@
+<section class="category-form">
+  <h2>{{ isEdit() ? 'Edit category' : 'Add category' }}</h2>
+
+  @if (loading()) {
+    <p class="status">Loading…</p>
+  } @else if (loadError()) {
+    <p class="status error">{{ loadError() }}</p>
+    <a routerLink="/categories" class="btn btn-secondary">Back to list</a>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+      <div class="field">
+        <label for="name">Name</label>
+        <input id="name" type="text" formControlName="name" maxlength="100"
+               [attr.aria-invalid]="showError('name')" aria-describedby="name-error" />
+        @if (showError('name')) {
+          <p id="name-error" class="field-error">Name is required (up to 100 characters).</p>
+        }
+      </div>
+
+      <div class="field">
+        <label for="minWeight">Minimum weight (kg)</label>
+        <input id="minWeight" type="number" inputmode="decimal" step="0.01" min="0" formControlName="minWeight"
+               [attr.aria-invalid]="showError('minWeight')" aria-describedby="minWeight-hint minWeight-error" />
+        <p id="minWeight-hint" class="field-hint">Vehicles weighing this much or more belong here.</p>
+        @if (showError('minWeight')) {
+          <p id="minWeight-error" class="field-error">Enter 0 or more, with at most 2 decimal places.</p>
+        }
+      </div>
+
+      <div class="field">
+        <label for="maxWeight">Maximum weight (kg)</label>
+        <input id="maxWeight" type="number" inputmode="decimal" step="0.01" min="0" formControlName="maxWeight"
+               placeholder="No limit" [attr.aria-invalid]="showError('maxWeight')"
+               aria-describedby="maxWeight-hint maxWeight-error" />
+        <p id="maxWeight-hint" class="field-hint">Vehicles up to and including this weight belong here. Leave empty for no upper limit.</p>
+        @if (showError('maxWeight')) {
+          <p id="maxWeight-error" class="field-error">Enter 0 or more, with at most 2 decimal places.</p>
+        }
+      </div>
+
+      <div class="field">
+        <label for="icon">Icon</label>
+        <div class="icon-picker">
+          <select id="icon" formControlName="icon"
+                  [attr.aria-invalid]="showError('icon')" aria-describedby="icon-hint icon-error">
+            <option value="" disabled>Select an icon</option>
+            @for (icon of icons(); track icon.name) {
+              <option [value]="icon.name">{{ icon.name }}</option>
+            }
+          </select>
+          <span class="icon-preview" aria-hidden="true">
+            @if (selectedIcon(); as icon) {
+              <img [src]="icon.imageUrl" alt="" width="32" height="32" />
+            }
+          </span>
+        </div>
+        @if (retiredIcon()) {
+          <p id="icon-hint" class="field-hint">
+            The current icon '{{ retiredIcon() }}' is no longer in the icon list. Choose a new one.
+          </p>
+        }
+        @if (showError('icon')) {
+          <p id="icon-error" class="field-error">Choose an icon.</p>
+        }
+      </div>
+
+      @if (rangeProblem()) {
+        <p class="range-error" role="status">{{ rangeProblem() }}</p>
+      }
+
+      @if (saveError()) {
+        <p class="status error" role="alert">{{ saveError() }}</p>
+      }
+
+      <div class="actions">
+        <button type="submit" class="btn btn-primary" [disabled]="saving()">
+          {{ saving() ? 'Saving…' : (isEdit() ? 'Save changes' : 'Add category') }}
+        </button>
+        <a routerLink="/categories" class="btn btn-secondary">Cancel</a>
+      </div>
+    </form>
+  }
+</section>

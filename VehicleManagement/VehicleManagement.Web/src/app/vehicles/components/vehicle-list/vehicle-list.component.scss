@@ -1,0 +1,142 @@
+.vehicles {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+
+  h2 {
+    margin: 0;
+  }
+}
+
+.toolbar {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.actions-col {
+  width: 1%;
+  text-align: right;
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: #4b5563;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: #e0e7ff;
+    color: #1d4ed8;
+  }
+
+  &.danger:hover:not(:disabled) {
+    background: #fee2e2;
+    color: #b91c1c;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #1d4ed8;
+    outline-offset: 1px;
+  }
+}
+
+.status {
+  color: #555;
+
+  &.error {
+    color: #b91c1c;
+  }
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  white-space: nowrap;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+th,
+td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+th {
+  background: #f3f4f6;
+  font-weight: 600;
+}
+
+.sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+
+  &:hover {
+    color: #1d4ed8;
+  }
+
+  &:focus-visible {
+    outline: 2px solid #1d4ed8;
+    outline-offset: 2px;
+  }
+}
+
+// Reserve space so headers don't shift when the arrow appears.
+.sort-indicator {
+  display: inline-block;
+  width: 0.8em;
+  font-size: 0.75em;
+}
+
+.num {
+  text-align: right;
+}
+
+.category {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.muted {
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: #e0e7ff;
+  color: #3730a3;
+  font-size: 0.85rem;
+}

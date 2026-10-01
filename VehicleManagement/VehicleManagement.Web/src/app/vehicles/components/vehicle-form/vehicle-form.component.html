@@ -1,0 +1,91 @@
+<section class="vehicle-form">
+  <h2>{{ isEdit() ? 'Edit vehicle' : 'Add vehicle' }}</h2>
+
+  @if (loading()) {
+    <p class="status">Loading…</p>
+  } @else if (loadError()) {
+    <p class="status error">{{ loadError() }}</p>
+    <a routerLink="/vehicles" class="btn btn-secondary">Back to list</a>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+      <div class="field">
+        <label for="ownerName">Owner name</label>
+        <input id="ownerName" type="text" formControlName="ownerName" maxlength="200"
+               [attr.aria-invalid]="showError('ownerName')" aria-describedby="ownerName-error" />
+        @if (showError('ownerName')) {
+          <p id="ownerName-error" class="field-error">
+            @if (form.controls.ownerName.hasError('maxlength')) {
+              Owner name must be 200 characters or fewer.
+            } @else {
+              Owner name is required.
+            }
+          </p>
+        }
+      </div>
+
+      <div class="field">
+        <label for="manufacturerId">Manufacturer</label>
+        <select id="manufacturerId" formControlName="manufacturerId"
+                [attr.aria-invalid]="showError('manufacturerId')" aria-describedby="manufacturerId-error">
+          <option [ngValue]="null" disabled>Select a manufacturer</option>
+          @for (m of manufacturers(); track m.id) {
+            <option [ngValue]="m.id">{{ m.name }}</option>
+          }
+        </select>
+        @if (showError('manufacturerId')) {
+          <p id="manufacturerId-error" class="field-error">Manufacturer is required.</p>
+        }
+      </div>
+
+      <div class="field">
+        <label for="yearOfManufacture">Year of manufacture</label>
+        <input id="yearOfManufacture" type="number" inputmode="numeric" formControlName="yearOfManufacture"
+               [attr.aria-invalid]="showError('yearOfManufacture')" aria-describedby="yearOfManufacture-error" />
+        @if (showError('yearOfManufacture')) {
+          <p id="yearOfManufacture-error" class="field-error">Enter a year as a whole number greater than 0.</p>
+        }
+      </div>
+
+      <div class="field">
+        <label for="weight">Weight (kg)</label>
+        <input id="weight" type="number" inputmode="decimal" step="0.01" formControlName="weight"
+               [attr.aria-invalid]="showError('weight')" aria-describedby="weight-error" />
+        @if (showError('weight')) {
+          <p id="weight-error" class="field-error">Enter a weight greater than 0 with at most 2 decimal places.</p>
+        }
+      </div>
+
+      @if (categoryPreview(); as preview) {
+        <div class="field">
+          <span class="label">Category</span>
+          <p class="category-preview" aria-live="polite">
+            @switch (preview.state) {
+              @case ('match') {
+                <app-category-icon [name]="preview.category.icon" [size]="24" />
+                <span class="badge">{{ preview.category.name }}</span>
+              }
+              @case ('no-match') {
+                <span class="muted">Uncategorised</span>
+                <span class="field-hint">No category covers this weight.</span>
+              }
+              @default {
+                <span class="field-hint">Enter a weight to see the category.</span>
+              }
+            }
+          </p>
+        </div>
+      }
+
+      @if (saveError()) {
+        <p class="status error" role="alert">{{ saveError() }}</p>
+      }
+
+      <div class="actions">
+        <button type="submit" class="btn btn-primary" [disabled]="saving()">
+          {{ saving() ? 'Saving…' : (isEdit() ? 'Save changes' : 'Add vehicle') }}
+        </button>
+        <a routerLink="/vehicles" class="btn btn-secondary">Cancel</a>
+      </div>
+    </form>
+  }
+</section>

@@ -1,0 +1,92 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.app-header {
+  padding: 1rem 1.5rem;
+  background: #1e293b;
+  color: #fff;
+
+  h1 {
+    margin: 0;
+    font-size: 1.4rem;
+  }
+}
+
+.app-body {
+  display: flex;
+  flex: 1;
+}
+
+.sidebar {
+  flex: 0 0 220px;
+  padding: 1rem 0.75rem;
+  background: #f8fafc;
+  border-right: 1px solid #e5e7eb;
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: 6px;
+    color: #374151;
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+      background: #eef2ff;
+      color: #1d4ed8;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #1d4ed8;
+      outline-offset: 1px;
+    }
+
+    &.active {
+      background: #e0e7ff;
+      color: #1d4ed8;
+      font-weight: 600;
+    }
+  }
+}
+
+main {
+  flex: 1;
+  min-width: 0; // lets wide tables scroll inside main instead of stretching the page
+  padding: 1.5rem;
+}
+
+// Narrow screens: sidebar becomes a row of tabs above the content.
+@media (max-width: 767px) {
+  .app-body {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    flex: none;
+    padding: 0.5rem;
+    border-right: 0;
+    border-bottom: 1px solid #e5e7eb;
+
+    ul {
+      flex-direction: row;
+    }
+  }
+
+  main {
+    padding: 1rem;
+  }
+}
