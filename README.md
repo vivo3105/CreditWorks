@@ -283,16 +283,35 @@ But, these icons are configurable in the API appsetting.json file.
 - One person at a time manages categories (see the concurrency limitation below).
 - The app runs on a trusted local network for now: **there is no authentication**.
 
-### Some design decisions
+## Some Design Decisions
 
-**The category is calculated, not stored.** 
-	- There's no foreign key that can go out of date when categories change, and no background job to re-categorise vehicles. 
-	- The cost is a small calculation on every read, which is fine at this scale only
-**Gaps allowed, rather than requiring full coverage from 0 kg.** 
-	An earlier version required the categories to cover every weight with no gaps, which meant an add, edit or delete also had to adjust neighbouring categories automatically. That was replaced by a simpler rule: a clash is rejected, and nothing else changes. To move a limit into a neighbour's range, change the neighbour first. The trade-off is that Uncategorised vehicles are possible, and the UI shows them clearly.
-**Icons come from configuration.** 
-**The browser repeats the API's rules (`category-rules.ts`) for instant feedback,** but the API makes the final decision.
-**Sorting happens in the browser,** 
+### Category Calculation
+
+The category is **calculated dynamically**, rather than stored against the vehicle.
+
+This means:
+- No `CategoryId` is stored in the `Vehicles` table.
+- Category changes take effect immediately without re-categorising existing vehicles.
+- There is no background job required to update vehicle categories.
+
+### Category Gaps
+
+Category ranges are allowed to have gaps.
+
+This was chosen to keep category management simple:
+- Category clashes are rejected.
+- Adding, editing or deleting a category does not automatically modify neighbouring categories.
+- If a vehicle's weight does not fall within any category, it is displayed as **Uncategorised**.
+- The UI clearly highlights category gaps so administrators can identify them.
+
+The trade-off is that an **Uncategorised** vehicle is possible, but category management remains predictable and does not unexpectedly modify other categories.
+
+### Validation
+
+Category validation is performed on both the frontend and backend.
+
+- The frontend provides immediate feedback using `category-rule.ts`.
+- The API performs the final validation and is the authoritative source.
 
 ### Known limitations
 - **No authentication or authorisation.** Anyone who can reach the API can create, change and delete data.
